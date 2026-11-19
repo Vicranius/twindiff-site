@@ -4,16 +4,40 @@ const hero = document.querySelector('.hero-stage');
 const heroWindow = document.querySelector('.hero-window');
 const pin = document.querySelector('.pinned');
 const steps = [...document.querySelectorAll('.steps article')];
-const screens = [...document.querySelectorAll('.screens img')];
+const screens = [...document.querySelectorAll('.screens .capture')];
 const viewLinks = [...document.querySelectorAll('.views a')];
 const pipeline = document.querySelector('.pipeline');
-const segments = [...pipeline.children].slice(0, -1);
+const pipelineSteps = [...pipeline.children];
 const stats = document.querySelector('.stats');
 const counters = [...stats.querySelectorAll('[data-count]')];
 const languageButtons = document.querySelectorAll('[data-lang]');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const clamp = n => Math.min(1, Math.max(0, n));
 const translations = [];
+
+let pixelRatio = 0;
+let densityQuery;
+
+// Zoom and monitor changes can alter density without changing the page width.
+function updatePixelRatio() {
+  const ratio = window.devicePixelRatio || 1;
+  if (ratio === pixelRatio) return;
+  pixelRatio = ratio;
+  document.documentElement.style.setProperty('--dpr', ratio);
+  densityQuery?.removeEventListener('change', updatePixelRatio);
+  densityQuery = matchMedia(`(resolution: ${ratio}dppx)`);
+  densityQuery.addEventListener('change', updatePixelRatio);
+  needsMeasure = true;
+}
+
+// Some display/emulation changes update devicePixelRatio without a media or resize event.
+let densityTimer;
+function watchDisplay() {
+  clearInterval(densityTimer);
+  if (document.hidden) return;
+  updatePixelRatio();
+  densityTimer = setInterval(updatePixelRatio, 500);
+}
 
 // Keep both languages with their content in the HTML.
 for (const [selector, dataKey, attribute] of [
@@ -23,8 +47,18 @@ for (const [selector, dataKey, attribute] of [
   ['[data-content-en]', 'contentEn', 'content']
 ]) {
   for (const element of document.querySelectorAll(selector)) {
-    translations.push({ element, attribute, en: element.dataset[dataKey],
-      tr: attribute ? element.getAttribute(attribute) : element.textContent });
+    const item = { element, attribute, en: element.dataset[dataKey],
+      tr: attribute ? element.getAttribute(attribute) : element.textContent };
+    if (!attribute && document.body.contains(element)) {
+      const stack = document.createElement('span');
+      stack.className = 'copy-stack';
+      item.visible = document.createElement('span');
+      item.visible.textContent = item.tr;
+      stack.dataset.reserve = item.en;
+      stack.append(item.visible);
+      element.replaceChildren(stack);
+    }
+    translations.push(item);
   }
 }
 
@@ -69,6 +103,7 @@ function showView(index) {
 
 function renderScroll() {
   frame = 0;
+  updatePixelRatio();
   if (needsMeasure) measure();
   const y = window.scrollY;
   const {height, heroEnd, centers, readingOffset, pipeTop, pipeHeight} = dimensions;
@@ -79,16 +114,19 @@ function renderScroll() {
   });
   showView(nearest);
 
-  if (reducedMotion.matches) return;
   const progress = clamp(y / Math.max(1, heroEnd));
-  if (progress !== heroProgress) {
+  if (!reducedMotion.matches && progress !== heroProgress) {
     const tilt = 1 - progress;
-    heroWindow.style.transform = `rotateX(${24 * tilt}deg) rotateY(${-4 * tilt}deg) rotateZ(${-tilt}deg) scale(${1 - .055 * tilt})`;
+    heroWindow.style.transform = `rotateX(${24 * tilt}deg) rotateY(${-4 * tilt}deg) rotateZ(${-tilt}deg) scale(${1 - .08 * tilt})`;
     heroProgress = progress;
   }
-  const draw = clamp((y + height * .9 - pipeTop) / (pipeHeight + height * .18));
+  const draw = reducedMotion.matches ? 1 : clamp((y + height * .84 - pipeTop) / (pipeHeight + height * .18));
   if (draw !== lineProgress) {
-    segments.forEach((segment, i) => segment.style.setProperty('--draw', clamp(draw * segments.length - i)));
+    const position = draw * (pipelineSteps.length - 1);
+    pipelineSteps.forEach((step, i) => {
+      step.classList.toggle('is-lit', draw > 0 && position >= i);
+      if (i < pipelineSteps.length - 1) step.style.setProperty('--draw', clamp(position - i));
+    });
     lineProgress = draw;
   }
 }
@@ -132,9 +170,11 @@ function applyLanguage(lang) {
   document.documentElement.lang = lang;
   for (const item of translations) {
     if (item.attribute) item.element.setAttribute(item.attribute, item[lang]);
-    else item.element.textContent = item[lang];
+    else if (item.visible) {
+      item.visible.textContent = item[lang];
+      item.visible.parentElement.dataset.reserve = lang === 'tr' ? item.en : item.tr;
+    } else item.element.textContent = item[lang];
   }
-  languageButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.lang === lang)));
   numberFormat = new Intl.NumberFormat(lang === 'en' ? 'en-US' : 'tr-TR');
   finishCounts();
   for (const counter of counters) {
@@ -144,11 +184,33 @@ function applyLanguage(lang) {
   invalidate();
 }
 
-languageButtons.forEach(button => button.addEventListener('click', () => applyLanguage(button.dataset.lang)));
+let requestedLanguage = document.documentElement.lang;
+let languageTimer;
+
+function finishLanguageSwitch() {
+  clearTimeout(languageTimer);
+  if (document.documentElement.lang !== requestedLanguage) applyLanguage(requestedLanguage);
+  document.documentElement.classList.remove('changing-language');
+}
+
+function selectLanguage(lang) {
+  if (lang === requestedLanguage) return;
+  requestedLanguage = lang;
+  languageButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.lang === lang)));
+  if (reducedMotion.matches || lang === document.documentElement.lang) {
+    finishLanguageSwitch();
+    return;
+  }
+  document.documentElement.classList.add('changing-language');
+  languageTimer = setTimeout(finishLanguageSwitch, 120);
+}
+
+languageButtons.forEach(button => button.addEventListener('click', () => selectLanguage(button.dataset.lang)));
 window.addEventListener('scroll', scheduleScroll, {passive: true});
 window.addEventListener('resize', invalidate);
 window.addEventListener('load', invalidate);
 reducedMotion.addEventListener('change', () => {
+  if (reducedMotion.matches) finishLanguageSwitch();
   heroWindow.style.removeProperty('transform');
   heroProgress = lineProgress = -1;
   finishCounts();
@@ -163,4 +225,6 @@ const statsObserver = new IntersectionObserver(entries => {
   }
 }, {threshold: .2});
 statsObserver.observe(stats);
+document.addEventListener('visibilitychange', watchDisplay);
+watchDisplay();
 applyLanguage('tr');

@@ -2,9 +2,19 @@
 <html lang="tr">
 <head>
   <meta charset="utf-8">
+  <script>if (new URLSearchParams(location.search).get('debug') === '1') document.write('<script src="debug.js"><\/script>');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#09090b">
   <meta name="description" content="TwinDiff ile iki derlemeyi bilgisayarınızda karşılaştırın. Kaynak koddan gerçek kart testlerine." data-content-en="Compare two builds on your computer with TwinDiff. From source code to real board tests.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="TwinDiff">
+  <meta property="og:description" content="TwinDiff ile kodu, sinyalleri ve firmware’i masaüstünde karşılaştırın. Dosyalarınız bu bilgisayarda kalır." data-content-en="Compare code, signals and firmware on your desktop with TwinDiff. Your files stay on this computer.">
+  <meta property="og:image" content="https://vicranius.github.io/twindiff-site/assets/icon-256.png">
+  <meta property="og:url" content="https://vicranius.github.io/twindiff-site/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="TwinDiff">
+  <meta name="twitter:description" content="TwinDiff ile kodu, sinyalleri ve firmware’i masaüstünde karşılaştırın. Dosyalarınız bu bilgisayarda kalır." data-content-en="Compare code, signals and firmware on your desktop with TwinDiff. Your files stay on this computer.">
+  <meta name="twitter:image" content="https://vicranius.github.io/twindiff-site/assets/icon-256.png">
   <title data-en="TwinDiff — Comparison for embedded developers">TwinDiff — Gömülü sistemler için karşılaştırma</title>
   <link rel="icon" href="assets/icon-256.png">
   <link rel="stylesheet" href="style.css">
@@ -27,7 +37,7 @@
       <nav aria-label="Menü" data-label-en="Navigation">
         <a href="#compare" data-en="Compare">Karşılaştırma</a>
         <a href="#pipeline" data-en="Workflow">İş akışı</a>
-        <a href="#boards" data-en="Board tests">Kart testleri</a>
+        <a href="#boards" data-en="Boards">Kartlar</a>
       </nav>
       <div class="languages" role="group" aria-label="Dil" data-label-en="Language">
         <button type="button" lang="tr" aria-label="Türkçe" aria-pressed="true" data-lang="tr">TR</button>
@@ -36,7 +46,7 @@
     </div>
   </header>
   <main id="main">
-    <section class="hero wrap" aria-labelledby="hero-title">
+    <section class="hero wrap" id="hero" aria-labelledby="hero-title">
       <div class="hero-intro">
         <div>
           <p class="eyebrow"><span class="index-mark" aria-hidden="true"></span><span data-en="Embedded development">Gömülü sistemler için</span></p>
@@ -44,16 +54,26 @@
         </div>
         <div class="hero-side">
           <p data-en="Compare code, signals and firmware on your desktop with TwinDiff. Your files stay on this computer.">TwinDiff ile kodu, sinyalleri ve firmware’i masaüstünde karşılaştırın. Dosyalarınız bu bilgisayarda kalır.</p>
+          <p class="platform" data-en="Available for Windows today. Linux (Ubuntu) and macOS are coming.">Şu an Windows için. Linux (Ubuntu) ve macOS desteği geliyor.</p>
           <a class="cta" href="#compare"><svg class="icon" aria-hidden="true"><use href="#split"/></svg><span data-en="Explore comparisons">Karşılaştırmayı keşfet</span></a>
         </div>
       </div>
       <figure class="hero-stage">
         <div class="hero-window window">
-          <div class="window-bar" aria-hidden="true"><span class="window-dots"><i></i><i></i><i></i></span><span class="window-title"><svg class="icon"><use href="#split"/></svg>TwinDiff <b>/</b> main.c</span><span class="window-mode">DIFF</span></div>
-          <img src="assets/code.png" width="1456" height="958" fetchpriority="high" alt="TwinDiff iki main.c dosyasında eklenen ve değişen satırları gösteriyor." data-alt-en="TwinDiff shows added and changed lines in two main.c files.">
+          <div class="window-bar" aria-hidden="true"><span class="window-dots"><i></i><i></i><i></i></span><span class="window-title"><img src="assets/icon-256.png" width="16" height="16" alt="">TwinDiff <b>/</b> main.c</span></div>
+          <div class="capture"><img src="assets/code.png" width="1456" height="958" fetchpriority="high" alt="TwinDiff iki main.c dosyasında eklenen ve değişen satırları gösteriyor." data-alt-en="TwinDiff shows added and changed lines in two main.c files."></div>
         </div>
         <figcaption><span><i class="legend-dot ref"></i><span data-en="Reference">Referans</span><i class="legend-dot candidate"></i><span data-en="Candidate">Aday</span></span><span>main.c <span aria-hidden="true">↔</span> main.c</span></figcaption>
       </figure>
+    </section>
+    <section class="section wrap overview" id="overview" aria-labelledby="overview-title">
+      <h2 id="overview-title" data-en="What TwinDiff does">TwinDiff ne yapar?</h2>
+      <div class="overview-grid">
+        <article><svg class="icon" aria-hidden="true"><use href="#split"/></svg><h3 data-en="Compare locally">Yerelde karşılaştırın</h3><p data-en="Compare two builds or files on your own computer.">İki derlemeyi veya dosyayı kendi bilgisayarınızda karşılaştırın.</p></article>
+        <article><svg class="icon" aria-hidden="true"><use href="#shield"/></svg><h3 data-en="Program boards safely">Kartı güvenle programlayın</h3><p data-en="Review the plan before writing. TwinDiff backs up the board and checks the write by reading it back.">Yazmadan önce planı inceleyin. TwinDiff yedek alır ve yazdığını geri okuyarak doğrular.</p></article>
+        <article><svg class="icon" aria-hidden="true"><use href="#chip"/></svg><h3 data-en="Compile with k8cc">k8cc ile derleyin</h3><p data-en="TwinDiff’s own C compiler, k8cc, is checked against GCC’s test suites.">TwinDiff’in kendi C derleyicisi k8cc, GCC’nin test setleriyle sınanır.</p></article>
+      </div>
+      <p class="why"><strong data-en="Why?">Neden?</strong> <span data-en="Firmware teams need to know exactly what changed between two builds and what is on the chip.">Firmware ekipleri iki derleme arasında tam olarak neyin değiştiğini ve çipte ne olduğunu bilmelidir.</span></p>
     </section>
     <section class="section wrap" id="compare" aria-labelledby="compare-title">
       <p class="eyebrow"><span class="index-mark" aria-hidden="true"></span><span data-en="Comparison views">Karşılaştırma görünümleri</span></p>
@@ -61,12 +81,12 @@
       <div class="story">
         <div class="pinned">
           <div class="story-window window">
-            <div class="window-bar" aria-hidden="true"><span class="window-dots"><i></i><i></i><i></i></span><span class="window-title">TwinDiff</span><svg class="icon"><use href="#split"/></svg></div>
+            <div class="window-bar" aria-hidden="true"><span class="window-dots"><i></i><i></i><i></i></span><span class="window-title"><img src="assets/icon-256.png" width="16" height="16" alt="">TwinDiff</span><span></span></div>
             <div class="screens">
-              <img class="current" src="assets/code.png" width="1456" height="958" alt="Kod karşılaştırması" data-alt-en="Code comparison">
-              <img loading="lazy" src="assets/binary.png" width="1456" height="958" alt="İkili dosya karşılaştırması" data-alt-en="Binary comparison" aria-hidden="true">
-              <img loading="lazy" src="assets/signals.png" width="1456" height="958" alt="Sinyal karşılaştırması" data-alt-en="Signal comparison" aria-hidden="true">
-              <img loading="lazy" src="assets/images.png" width="1456" height="958" alt="Görüntü karşılaştırması" data-alt-en="Image comparison" aria-hidden="true">
+              <div class="capture code-view current"><img src="assets/code.png" width="1456" height="958" alt="main.c dosyasında eklenen UART satırı ve değişen gecikme." data-alt-en="An added UART line and a changed delay in main.c."></div>
+              <div class="capture hex-view" aria-hidden="true"><img loading="lazy" src="assets/binary.png" width="1456" height="958" alt="HEX görünümünde değişen baytlar ve ofsetleri." data-alt-en="Changed bytes and their offsets in the HEX view."></div>
+              <div class="capture plot-view" aria-hidden="true"><img loading="lazy" src="assets/signals.png" width="1456" height="958" alt="Grafikte iki saniye noktasında ayrılan gerilim eğrileri." data-alt-en="Voltage traces diverge at the two-second mark."></div>
+              <div class="capture swipe-view" aria-hidden="true"><img loading="lazy" src="assets/images.png" width="1456" height="958" alt="Referans ve aday görüntülerini ayıran çizgi ve kaydırma denetimi." data-alt-en="The divider and slider in the image swipe view."></div>
             </div>
           </div>
           <nav class="views" aria-label="Karşılaştırma görünümleri" data-label-en="Comparison views">
@@ -105,25 +125,34 @@
       </dl>
     </section>
     <section class="section ruled" id="boards" aria-labelledby="boards-title"><div class="wrap">
-      <p class="eyebrow"><span class="index-mark" aria-hidden="true"></span><span data-en="Board tests">Kart testleri</span></p>
-      <h2 id="boards-title" data-en="Evidence on real boards.">Gerçek kartta kanıt.</h2>
+      <p class="eyebrow"><span class="index-mark" aria-hidden="true"></span><span data-en="Hardware">Donanım</span></p>
+      <h2 id="boards-title" data-en="Board tests and support.">Kart testleri ve destek.</h2>
       <div class="board-grid">
-        <article class="card"><svg class="board-art" viewBox="0 0 100 64" aria-hidden="true"><rect x="11" y="8" width="76" height="48" rx="5"/><rect x="25" y="18" width="30" height="28" rx="2"/><path d="M32 24h15m-15 5h10m-10 5h13m-13 5h7m20-16h7v-6h5v21h5V18M19 12h58m-58 40h58" stroke-dasharray="2 3"/><path d="M59 42h13m-13 4h9"/><circle cx="18" cy="20" r="1.5"/><circle cx="80" cy="46" r="1.5"/></svg>
-          <time datetime="2026-11-19" data-en="19 Nov 2026">19 Kasım 2026</time><h3>ESP32</h3><p data-en="k8cc compiled 156 C files in an ESP-IDF v6.1 application using FreeRTOS and mbedtls. All 11/11 test results printed on the board matched the GCC build.">FreeRTOS ve mbedtls kullanan bir ESP-IDF v6.1 uygulamasının 156 C dosyasını k8cc derledi. Kartta yazdırılan 11/11 test sonucu GCC derlemesiyle aynıydı.</p>
+        <article class="card"><img class="board-art" loading="lazy" src="assets/boards/esp32.svg" alt="">
+          <h3>ESP32</h3><p data-en="k8cc compiled 156 C files in an ESP-IDF v6.1 application using FreeRTOS and mbedtls. All 11/11 test results printed on the board matched the GCC build.">FreeRTOS ve mbedtls kullanan bir ESP-IDF v6.1 uygulamasının 156 C dosyasını k8cc derledi. Kartta yazdırılan 11/11 test sonucu GCC derlemesiyle aynıydı.</p>
         </article>
-        <article class="card"><svg class="board-art" viewBox="0 0 100 64" aria-hidden="true"><path d="M13 10h62l10 10v32H13z"/><rect x="8" y="18" width="15" height="13" rx="2"/><rect x="8" y="39" width="13" height="8" rx="1"/><rect x="39" y="29" width="30" height="10" rx="1"/><path d="M27 16h43m-43 31h46M42 25v4m5-4v4m5-4v4m5-4v4m5-4v4m5-4v4m-25 10v4m5-4v4m5-4v4m5-4v4m5-4v4m5-4v4"/><circle cx="78" cy="23" r="2"/></svg>
-          <time datetime="2026-11-19" data-en="19 Nov 2026">19 Kasım 2026</time><h3>Arduino Uno</h3><p data-en="A GCC build of an Arduino sketch was uploaded through TwinDiff’s new upload path (development branch). The upload was verified byte by byte, and the board printed the expected output.">Bir Arduino sketch'inin GCC derlemesi, TwinDiff'in yeni yükleme yoluyla (geliştirme dalı) karta yazıldı. Yükleme bayt bayt doğrulandı, kart beklenen çıktıyı yazdırdı.</p>
+        <article class="card"><img class="board-art" loading="lazy" src="assets/boards/uno.svg" alt="">
+          <h3>Arduino Uno</h3><p data-en="A GCC build of an Arduino sketch was uploaded through TwinDiff’s new upload path (development branch). The upload was verified byte by byte, and the board printed the expected output.">Bir Arduino sketch'inin GCC derlemesi, TwinDiff'in yeni yükleme yoluyla (geliştirme dalı) karta yazıldı. Yükleme bayt bayt doğrulandı, kart beklenen çıktıyı yazdırdı.</p>
         </article>
-        <article class="card"><svg class="board-art" viewBox="0 0 100 64" aria-hidden="true"><rect x="30" y="12" width="40" height="40" rx="3"/><rect x="37" y="19" width="26" height="26" rx="2"/><path d="M36 5v7m7-7v7m7-7v7m7-7v7m7-7v7M36 52v7m7-7v7m7-7v7m7-7v7m7-7v7M23 18h7m-7 7h7m-7 7h7m-7 7h7m-7 7h7m40-28h7m-7 7h7m-7 7h7m-7 7h7m-7 7h7"/><circle cx="42" cy="24" r="1.5"/></svg>
-          <time datetime="2026-11-18" data-en="18 Nov 2026">18 Kasım 2026</time><h3>STM32F411</h3><p data-en="Sample firmware built with k8cc was written to an STM32F411 board through TwinDiff, verified, and ran. On an ESP32 board, the k8cc and GCC builds of a sample gave the same result.">k8cc ile derlenen örnek firmware, TwinDiff ile STM32F411 kartına yazıldı, doğrulandı ve çalıştı. Bir ESP32 kartında da örneğin k8cc ve GCC derlemeleri aynı sonucu verdi.</p>
+        <article class="card"><img class="board-art" loading="lazy" src="assets/boards/nucleo.svg" alt="">
+          <h3>STM32F411</h3><p data-en="Sample firmware built with k8cc was written to an STM32F411 board through TwinDiff, verified, and ran. On an ESP32 board, the k8cc and GCC builds of a sample gave the same result.">k8cc ile derlenen örnek firmware, TwinDiff ile STM32F411 kartına yazıldı, doğrulandı ve çalıştı. Bir ESP32 kartında da örneğin k8cc ve GCC derlemeleri aynı sonucu verdi.</p>
+        </article>
+        <article class="card"><img class="board-art" loading="lazy" src="assets/boards/tiva.svg" alt="">
+          <span class="support-label" data-en="Programming support">Programlama desteği</span><h3>TI Tiva C LaunchPad</h3><p data-en="TwinDiff supports programming Tiva C (TM4C123) boards through TI's DSLite tool.">TwinDiff, TI'ın DSLite aracı üzerinden Tiva C (TM4C123) kartlarını programlamayı destekler.</p>
         </article>
       </div>
     </div></section>
   </main>
-  <footer><div class="wrap footer-inner">
-    <div><a href="#top" class="brand"><img src="assets/icon-256.png" alt="" width="28" height="28">TwinDiff</a><p class="status"><i></i><span data-en="In development">Geliştiriliyor</span></p></div>
+  <footer id="contact"><div class="wrap footer-inner">
+    <div>
+      <a href="#top" class="brand"><img src="assets/icon-256.png" alt="" width="28" height="28">TwinDiff</a>
+      <div class="footer-status">
+        <p class="status"><i></i><span data-en="In development">Geliştiriliyor</span></p>
+        <p class="platform" data-en="Available for Windows today. Linux (Ubuntu) and macOS are coming.">Şu an Windows için. Linux (Ubuntu) ve macOS desteği geliyor.</p>
+      </div>
+    </div>
     <p data-en="BiGG Masters 2027-1 · Stage 1 participant. Sabancı University SUCool, November 2026.">BiGG Masters 2027-1 · 1. aşama katılımcısı. Sabancı Üniversitesi SUCool, Kasım 2026.</p>
-    <div class="contact"><strong data-en="Contact">İletişim</strong><p data-en="Contact details will be added.">İletişim bilgileri eklenecek.</p></div>
+    <div class="contact"><strong data-en="Contact">İletişim</strong><p><a href="mailto:durmazeray25@gmail.com">durmazeray25@gmail.com</a></p></div>
   </div></footer>
 </body>
 </html>

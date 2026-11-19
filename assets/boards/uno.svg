@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="960" viewBox="0 0 320 192">
+  <defs>
+    <linearGradient id="metal" x2=".84" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#e9e8df"/><stop offset=".25" stop-color="#adb6ba"/><stop offset=".51" stop-color="#d4d8d7"/><stop offset="1" stop-color="#757e86"/></linearGradient>
+    <linearGradient id="case" x2=".75" y2="1"><stop stop-color="#3b4248"/><stop offset=".65" stop-color="#202428"/><stop offset="1" stop-color="#111417"/></linearGradient>
+    <linearGradient id="mask" x2=".78" y2="1"><stop stop-color="#237f90"/><stop offset="1" stop-color="#125269"/></linearGradient>
+    <pattern id="socket" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#353b40"/><path d="M1 1h6v6H1z" fill="#181a1d"/><path d="M2.4 2.4h3.2v3.2H2.4z" fill="#08090b"/><path d="M2.4 5.7h3.3V2.4" fill="none" stroke="#95876a" stroke-width=".7"/></pattern>
+    <pattern id="goldpin" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="3.15" fill="#b29b66"/><rect x="2.4" y="2.4" width="3.2" height="3.2" rx=".35" fill="#ead09a"/><path d="M2.4 5.6h3.2V2.4" fill="none" stroke="#705f3c" stroke-width=".7"/></pattern>
+    <pattern id="lead" width="3.2" height="3.2" patternUnits="userSpaceOnUse"><rect width="1.6" height="3.2" fill="#aeb4b2"/></pattern>
+    <g id="via"><circle r="4.1" fill="#d0b279"/><circle r="2.8" fill="#17191c"/><path d="M-2.4 1.1a2.7 2.7 0 0 1 3.8-3.5" fill="none" stroke="#535459" stroke-width=".8"/></g>
+    <g id="smd"><rect width="6" height="3" rx=".55" fill="#b6bbba"/><rect x="1.2" width="3.6" height="3" fill="#a49172"/></g>
+    <g id="switch"><rect x="-5.2" y="-4.2" width="10.4" height="8.4" rx="1.4" fill="url(#metal)" stroke="#737b7f" stroke-width=".6"/><circle r="2.9" fill="#383d40"/><circle cy="-.5" r="2" fill="#555b5d"/></g>
+    <g id="cap"><circle r="6.3" fill="#343a3c"/><circle cy="-.6" r="5.5" fill="url(#metal)"/><path d="M-3.7-1.7h7.4m-3.7 0v4" fill="none" stroke="#8a9396" stroke-width=".7"/></g>
+    <g id="chip"><path d="M-11-16h22v32h-22z" fill="url(#lead)"/><path d="M-11-16h22v32h-22z" fill="url(#lead)" transform="rotate(90)"/><rect x="-13" y="-13" width="26" height="26" rx="1.5" fill="url(#case)" stroke="#14181a"/><circle cx="-8.8" cy="-8.6" r="1.3" fill="#697173"/></g>
+  </defs>
+  <g transform="rotate(-5 160 96)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M57 25h182l10 11h12v105l-12 10v13H60q-6 0-6-6V31q0-6 3-6z" transform="translate(.7 3)" fill="#11171b" stroke="#080a0b" stroke-width="2"/><path d="M57 25h182l10 11h12v105l-12 10v13H60q-6 0-6-6V31q0-6 3-6z" fill="url(#mask)" stroke="#4e9caa" stroke-width="1.3"/>
+    <path d="M108 46h24l21 21h69m-112-17h20l21 21h50m-96-14h20l26 26h75m-42 42h34l16-16v-13m-62 35h47l19-19V91m-106 36h-16l-17-17H74m64-26-9 8h-14l-13 12H72" fill="none" stroke="#438898" stroke-width="1.05"/>
+    <use href="#via" transform="translate(63 34)"/><use href="#via" transform="translate(248 47)"/><use href="#via" transform="translate(244 145)"/><use href="#via" transform="translate(96 154)"/>
+    <g transform="translate(93 30)"><rect x="-1" y="-1" width="82" height="10" rx="1.5" fill="#161a1c"/><rect x="0" y="0" width="80" height="8" rx="0.65" fill="url(#socket)"/></g>
+    <g transform="translate(179 30)"><rect x="-1" y="-1" width="66" height="10" rx="1.5" fill="#161a1c"/><rect x="0" y="0" width="64" height="8" rx="0.65" fill="url(#socket)"/></g>
+    <g transform="translate(124 148)"><rect x="-1" y="-1" width="66" height="10" rx="1.5" fill="#161a1c"/><rect x="0" y="0" width="64" height="8" rx="0.65" fill="url(#socket)"/></g>
+    <g transform="translate(197 148)"><rect x="-1" y="-1" width="50" height="10" rx="1.5" fill="#161a1c"/><rect x="0" y="0" width="48" height="8" rx="0.65" fill="url(#socket)"/></g>
+    <rect x="40" y="53" width="49" height="34" rx="2.6" fill="url(#metal)"/>
+    <rect x="39" y="54" width="6" height="32" rx="1.5" fill="#7d898f"/>
+    <path d="M44 57h36v26H44" fill="none" stroke="#e0e5df" stroke-width="0.95"/>
+    <path d="M67 59v5m0 13v5" fill="none" stroke="#657178" stroke-width="2.8"/>
+    <rect x="49" y="121" width="38" height="21" rx="2.4" fill="url(#case)"/>
+    <rect x="44" y="119" width="13" height="25" rx="2.6" fill="#202427"/>
+    <path d="M47 123v18" fill="none" stroke="#565e60" stroke-width="1"/>
+    <use href="#switch" transform="translate(71 38)"/>
+    <use href="#chip" transform="translate(116 77) rotate(45) scale(.75)"/>
+    <g transform="translate(93 112)"><rect x="1" y="-3" width="9" height="18" rx="1" fill="url(#metal)"/><rect x="0" y="0" width="12" height="12" rx="0.8" fill="url(#case)"/><path d="M2 11v5m4-5v5m4-5v5" fill="none" stroke="#a6adae" stroke-width="1.6"/></g>
+    <use href="#cap" transform="translate(109 117)"/><use href="#cap" transform="translate(113 134)"/>
+    <g transform="translate(142 107)"><rect x="0" y="-3" width="86" height="25" fill="url(#lead)"/><rect x="-2" y="0" width="90" height="19" rx="2.3" fill="#13171b"/><rect x="1" y="1" width="84" height="16" rx="1.8" fill="url(#case)"/><path d="M1 6a3.1 3.1 0 0 1 0 6" fill="none" stroke="#596164" stroke-width="1.2"/><circle cx="8" cy="5" r="1.25" fill="#687276"/></g>
+    <g transform="translate(229 71)"><rect x="-1" y="-1" width="26" height="18" rx="1.5" fill="#161a1c"/><rect x="0" y="0" width="24" height="16" rx="0.65" fill="url(#goldpin)"/></g>
+    <rect x="144" y="86" width="23" height="8" rx="4" fill="url(#metal)"/>
+    <rect x="91" y="87" width="13" height="6" rx="2.8" fill="url(#metal)"/>
+    <use href="#smd" transform="translate(130 67)"/><use href="#smd" transform="translate(135 60)"/><use href="#smd" transform="translate(137 76)"/><use href="#smd" transform="translate(142 73)"/><use href="#smd" transform="translate(163 81)"/><use href="#smd" transform="translate(169 91)"/><use href="#smd" transform="translate(173 83)"/><use href="#smd" transform="translate(180 81)"/><use href="#smd" transform="translate(197 134)"/><use href="#smd" transform="translate(201 139)"/><use href="#smd" transform="translate(90 100)"/><use href="#smd" transform="translate(94 104)"/><use href="#smd" transform="translate(70 99)"/><use href="#smd" transform="translate(77 99)"/>
+    <rect x="168" y="53" width="7" height="3" rx="0.8" fill="#a2aaa5"/><rect x="169.3" y="53" width="4.4" height="3" rx="0.4" fill="#dca24c"/>
+    <rect x="178" y="53" width="7" height="3" rx="0.8" fill="#a2aaa5"/><rect x="179.3" y="53" width="4.4" height="3" rx="0.4" fill="#dca24c"/>
+    <rect x="228" y="58" width="7" height="3" rx="0.8" fill="#a2aaa5"/><rect x="229.3" y="58" width="4.4" height="3" rx="0.4" fill="#83b692"/>
+  </g>
+</svg>
